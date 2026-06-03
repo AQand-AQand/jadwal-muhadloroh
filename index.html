@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MUHADLOROH BUSTANUL ULUM DALTIM</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5ef}
+.header{background:linear-gradient(135deg,#0d5a2a,#0a3d1d);color:#fff;text-align:center;padding:28px 12px}
+.header h1{margin:0;font-size:42px}
+.sub{background:#fff;text-align:center;padding:18px;font-size:24px;font-weight:bold}
+.wrap{max-width:1400px;margin:auto;padding:15px}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.title{font-size:32px;font-weight:bold;color:#0d5a2a}
+.days{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.days button{padding:10px 14px;border:none;border-radius:8px;background:#e6e6e6}
+.days button.active{background:#0d5a2a;color:white}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #ccc}
+.tables{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{border:1px solid #ddd;padding:10px;text-align:left}
+th{background:#0d5a2a;color:#fff}
+.banat th{background:#d81b60}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.btn{padding:12px 18px;border:none;border-radius:10px;color:#fff;cursor:pointer}
+.green{background:#0d5a2a}
+@media(max-width:900px){.top,.tables{grid-template-columns:1fr}.header h1{font-size:28px}}
+</style>
+</head>
+<body>
+<div id="poster">
+<div class="header">
+<h1>MUHADLOROH BUSTANUL ULUM DALTIM</h1>
+</div>
+<div class="sub">Jadwal Pelajaran dan Pengajar</div>
+
+<div class="wrap">
+<div class="top">
+<div class="card">
+<div class="title">Jadwal Hari Ini</div>
+<h2 id="hariIni">Rabu, Juni 2026</h2>
+</div>
+<div class="card">
+<b>Durasi Waktu Pelajaran</b><br><br>
+Jam ke-1 : 14.00 - 15.00 WIB<br>
+Jam ke-2 : 15.30 - 16.30 WIB
+</div>
+</div>
+
+<div class="days">
+<button class="active">Sabtu</button>
+<button>Ahad</button>
+<button>Senin</button>
+<button>Selasa</button>
+<button>Rabu</button>
+<button>Kamis</button>
+</div>
+
+<input placeholder="Cari nama ustaz / ustazah...">
+
+<div class="tables">
+<div>
+<h2>JADWAL BANIN</h2>
+<table>
+<tr><th>Kelas</th><th>Jam ke-1</th><th>Jam ke-2</th></tr>
+<tr><td>Kelas Satu</td><td>Fiqih<br>Hubailul Hakam</td><td>Nahwu<br>Hubailul Hakam</td></tr>
+<tr><td>Kelas Dua</td><td>Fiqih</td><td>Nahwu</td></tr>
+<tr><td>Kelas Tiga</td><td>Hadist</td><td>Tauhid</td></tr>
+</table>
+</div>
+
+<div>
+<h2>JADWAL BANAT</h2>
+<table class="banat">
+<tr><th>Kelas</th><th>Jam ke-1</th><th>Jam ke-2</th></tr>
+<tr><td>Sugro</td><td>Akhlaq</td><td>B. Arab</td></tr>
+<tr><td>Kelas Satu</td><td>Fiqih</td><td>Fiqih</td></tr>
+<tr><td>Kelas Dua</td><td>Nahwu</td><td>Nahwu</td></tr>
+</table>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn green" onclick="downloadPoster()">Export JPG</button>
+<button class="btn green" onclick="shareWA()">Share WhatsApp</button>
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+function downloadPoster(){
+ html2canvas(document.getElementById('poster')).then(canvas=>{
+   let a=document.createElement('a');
+   a.download='jadwal.jpg';
+   a.href=canvas.toDataURL('image/jpeg');
+   a.click();
+ });
+}
+function shareWA(){
+ window.open('https://wa.me/?text='+encodeURIComponent('Jadwal Muhadloroh hari ini'));
+}
+</script>
+</body>
+</html>
