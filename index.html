@@ -651,11 +651,22 @@
             const dateStr = new Date().toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'});
             currentDayText.textContent = `${hari}, ${dateStr}`;
 
-            // Hitung Tanggal Hijriah
+// Hitung Tanggal Hijriah
 try {
+    // ---------------------------------------------------------
+    // KOREKSI HIJRIYAH
+    // Ubah angka ini jika tanggal Hijriyah meleset.
+    // Contoh: -1 (mundur 1 hari), 1 (maju 1 hari), 0 (normal)
+    const koreksiHari = -1; 
+    // ---------------------------------------------------------
+    
+    // Salin waktu saat ini agar jam Masehi/Live Clock tidak ikut berubah
+    const tanggalHijri = new Date();
+    tanggalHijri.setDate(tanggalHijri.getDate() + koreksiHari);
+
     // Gunakan format angka standar untuk mengambil bagian-bagian tanggal
     const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
-    const parts = formatter.formatToParts(new Date());
+    const parts = formatter.formatToParts(tanggalHijri);
     
     let d, m, y;
     parts.forEach(part => {
