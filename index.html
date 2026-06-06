@@ -11,7 +11,7 @@
 
     <style>
         /* ==========================================================================
-           1. CSS STYLES (ASSETS/STYLE.CSS)
+           1. CSS STYLES
            ========================================================================== */
         * {
             margin: 0;
@@ -69,6 +69,7 @@
         /* Kolom Pencarian */
         .search-box {
             margin-bottom: 20px;
+            position: relative;
         }
 
         .search-box input {
@@ -84,6 +85,47 @@
         .search-box input:focus {
             border-color: var(--hijau-terang);
             box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+        }
+
+        /* Hasil Pencarian Pop-up / Dropdown List */
+        .search-results {
+            background: #ffffff;
+            padding: 8px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow);
+        }
+
+        .search-results h3 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            padding: 8px 12px 4px 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .search-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-item:hover {
+            background-color: #f1f5f9;
+            color: var(--hijau-terang);
+        }
+
+        .search-item .click-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
         }
 
         /* Pilihan Hari */
@@ -111,38 +153,29 @@
             border-color: var(--hijau-tua);
         }
 
-        /* Hasil Pencarian */
-        .search-results {
-            background: #ffffff;
-            padding: 16px;
+        /* Info Reset Filter Khusus */
+        .special-view-alert {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 12px 16px;
             border-radius: var(--radius);
-            margin-bottom: 24px;
-            border-left: 4px solid var(--hijau-terang);
-            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
         }
 
-        .search-results h3 {
-            margin-bottom: 12px;
-            color: var(--hijau-tua);
-        }
-
-        .search-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .search-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-item .nama-ustaz {
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .search-item .detail-mengajar {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .btn-reset-view {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         /* Kartu Informasi */
@@ -201,6 +234,12 @@
 
         .banin-zone .block-header { background-color: var(--hijau-tua); }
         .banat-zone .block-header { background-color: var(--pink-utama); }
+
+        /* Style Khusus Mode Tabel Pencarian Personal */
+        .personal-mode .banin-zone .block-header { background-color: #0f172a; }
+        .personal-mode .banat-zone .block-header { background-color: #0f172a; }
+        .personal-mode .banin-zone th { background-color: #1e293b; }
+        .personal-mode .banat-zone th { background-color: #1e293b; }
 
         .table-container {
             overflow-x: auto;
@@ -310,7 +349,12 @@
                 <input type="text" id="search-input" placeholder="Cari ustaz / ustazah...">
             </div>
 
-            <div class="days-filter">
+            <section id="search-results-section" class="search-results hidden">
+                <h3>Pilih Nama Pengajar:</h3>
+                <div id="search-results-container"></div>
+            </section>
+
+            <div class="days-filter" id="days-filter-block">
                 <button class="btn-day active" data-hari="Sabtu">Sabtu</button>
                 <button class="btn-day" data-hari="Ahad">Ahad</button>
                 <button class="btn-day" data-hari="Senin">Senin</button>
@@ -320,16 +364,16 @@
             </div>
         </section>
 
-        <section id="search-results-section" class="search-results hidden no-poster">
-            <h3>Hasil Pencarian Pengajar</h3>
-            <div id="search-results-container"></div>
-        </section>
+        <div id="personal-view-alert" class="special-view-alert hidden no-poster">
+            <span>Menampilkan Jadwal Khusus: <strong id="selected-teacher-name">...</strong></span>
+            <button class="btn-reset-view" id="btn-reset-view">Kembali ke Jadwal Harian</button>
+        </div>
 
         <div id="capture-area" class="capture-padding">
             
             <section class="info-cards">
                 <div class="card card-day">
-                    <h3>Jadwal Hari Ini</h3>
+                    <h3 id="info-card-title">Jadwal Hari Ini</h3>
                     <p id="current-day-text">Sabtu, 06 Juni 2026</p>
                 </div>
                 <div class="card card-time">
@@ -339,14 +383,14 @@
                 </div>
             </section>
 
-            <section class="schedule-grid">
+            <section class="schedule-grid" id="schedule-grid-container">
                 <div class="schedule-block banin-zone">
-                    <div class="block-header">JADWAL BANIN</div>
+                    <div class="block-header" id="header-banin-text">JADWAL BANIN</div>
                     <div class="table-container">
                         <table id="table-banin">
                             <thead>
                                 <tr>
-                                    <th>Kelas</th>
+                                    <th id="th-banin-class">Kelas</th>
                                     <th>Jam ke-1</th>
                                     <th>Jam ke-2</th>
                                 </tr>
@@ -357,12 +401,12 @@
                 </div>
 
                 <div class="schedule-block banat-zone">
-                    <div class="block-header">JADWAL BANAT</div>
+                    <div class="block-header" id="header-banat-text">JADWAL BANAT</div>
                     <div class="table-container">
                         <table id="table-banat">
                             <thead>
                                 <tr>
-                                    <th>Kelas</th>
+                                    <th id="th-banat-class">Kelas</th>
                                     <th>Jam ke-1</th>
                                     <th>Jam ke-2</th>
                                 </tr>
@@ -383,7 +427,7 @@
     </main>
 
     <script>
-        // Data internal yang telah dinormalisasi lengkap (Bagian 1 & Bagian 2)
+        // Data internal lengkap (Bagian 1 & Bagian 2)
         const databaseJadwal = {
             "Sabtu": {
                 "banin": [
@@ -495,68 +539,163 @@
             }
         };
 
+        // State Aplikasi
         let hariTerpilih = "Sabtu";
+        let modeTampilan = "normal"; // "normal" atau "personal"
+        let namaUstazTerpilih = "";
 
         // DOM Elements
         const currentDayText = document.getElementById('current-day-text');
+        const infoCardTitle = document.getElementById('info-card-title');
         const tableBaninBody = document.querySelector('#table-banin tbody');
         const tableBanatBody = document.querySelector('#table-banat tbody');
         const btnDays = document.querySelectorAll('.btn-day');
         const searchInput = document.getElementById('search-input');
         const searchResultsSection = document.getElementById('search-results-section');
         const searchResultsContainer = document.getElementById('search-results-container');
+        
+        const personalViewAlert = document.getElementById('personal-view-alert');
+        const selectedTeacherName = document.getElementById('selected-teacher-name');
+        const btnResetView = document.getElementById('btn-reset-view');
+        const daysFilterBlock = document.getElementById('days-filter-block');
+        const scheduleGridContainer = document.getElementById('schedule-grid-container');
 
-        // Render Tabel Utama
-        function renderJadwal(hari) {
+        const thBaninClass = document.getElementById('th-banin-class');
+        const thBanatClass = document.getElementById('th-banat-class');
+        const headerBaninText = document.getElementById('header-banin-text');
+        const headerBanatText = document.getElementById('header-banat-text');
+
+        // ==========================================================================
+        // SYSTEM RENDER UTAMA
+        // ==========================================================================
+        function renderJadwalHarian(hari) {
+            modeTampilan = "normal";
             hariTerpilih = hari;
+            
+            // Atur UI normal
+            personalViewAlert.classList.add('hidden');
+            daysFilterBlock.classList.remove('hidden');
+            scheduleGridContainer.classList.remove('personal-mode');
+            infoCardTitle.textContent = "Jadwal Hari Ini";
             currentDayText.textContent = `${hari}, 06 Juni 2026`;
+            
+            thBaninClass.textContent = "Kelas";
+            thBanatClass.textContent = "Kelas";
+            headerBaninText.textContent = "JADWAL BANIN";
+            headerBanatText.textContent = "JADWAL BANAT";
 
             tableBaninBody.innerHTML = '';
             tableBanatBody.innerHTML = '';
 
             const dataHari = databaseJadwal[hari] || { banin: [], banat: [] };
 
-            // Render Banin
             if (dataHari.banin.length === 0) {
                 tableBaninBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada jadwal</td></tr>`;
             } else {
-                dataHari.banin.forEach(item => tableBaninBody.appendChild(createRow(item)));
+                dataHari.banin.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight:600;">${item.kelas}</td>
+                        <td><span class="fan-name">${item.jam1_fan}</span><span class="teacher-name">${item.jam1_pengajar}</span></td>
+                        <td><span class="fan-name">${item.jam2_fan}</span><span class="teacher-name">${item.jam2_pengajar}</span></td>
+                    `;
+                    tableBaninBody.appendChild(tr);
+                });
             }
 
-            // Render Banat
             if (dataHari.banat.length === 0) {
                 tableBanatBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada jadwal</td></tr>`;
             } else {
-                dataHari.banat.forEach(item => tableBanatBody.appendChild(createRow(item)));
+                dataHari.banat.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight:600;">${item.kelas}</td>
+                        <td><span class="fan-name">${item.jam1_fan}</span><span class="teacher-name">${item.jam1_pengajar}</span></td>
+                        <td><span class="fan-name">${item.jam2_fan}</span><span class="teacher-name">${item.jam2_pengajar}</span></td>
+                    `;
+                    tableBanatBody.appendChild(tr);
+                });
             }
         }
 
-        function createRow(data) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-weight:600;">${data.kelas}</td>
-                <td>
-                    <span class="fan-name">${data.jam1_fan}</span>
-                    <span class="teacher-name">${data.jam1_pengajar}</span>
-                </td>
-                <td>
-                    <span class="fan-name">${data.jam2_fan}</span>
-                    <span class="teacher-name">${data.jam2_pengajar}</span>
-                </td>
-            `;
-            return tr;
+        // ==========================================================================
+        // SYSTEM RENDER KHUSUS PERSONAL (SETELAH KLIK NAMA)
+        // ==========================================================================
+        function renderJadwalKhususPengajar(namaPengajar) {
+            modeTampilan = "personal";
+            namaUstazTerpilih = namaPengajar;
+
+            // Atur UI khusus personal
+            selectedTeacherName.textContent = namaPengajar;
+            personalViewAlert.classList.remove('hidden');
+            daysFilterBlock.classList.add('hidden'); // Sembunyikan filter hari biasa
+            searchResultsSection.classList.add('hidden'); // Sembunyikan pencarian setelah diklik
+            searchInput.value = ""; // Reset input
+            scheduleGridContainer.classList.add('personal-mode');
+
+            infoCardTitle.textContent = "Pengajar Terpilih";
+            currentDayText.textContent = namaPengajar;
+
+            thBaninClass.textContent = "Hari (Kelas)";
+            thBanatClass.textContent = "Hari (Kelas)";
+            headerBaninText.textContent = `MENGAJAR BANIN`;
+            headerBanatText.textContent = `MENGAJAR BANAT`;
+
+            tableBaninBody.innerHTML = '';
+            tableBanatBody.innerHTML = '';
+
+            let adaBanin = false;
+            let adaBanat = false;
+
+            // Iterasi cari data di seluruh database hari
+            for (const [hari, kelompok] of Object.entries(databaseJadwal)) {
+                
+                // Cari di Banin
+                kelompok.banin.forEach(item => {
+                    const matchJam1 = item.jam1_pengajar.toLowerCase() === namaPengajar.toLowerCase();
+                    const matchJam2 = item.jam2_pengajar.toLowerCase() === namaPengajar.toLowerCase();
+
+                    if (matchJam1 || matchJam2) {
+                        adaBanin = true;
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td style="font-weight:600; color:var(--hijau-tua);">${hari} <br><span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">${item.kelas}</span></td>
+                            <td>${matchJam1 ? `<span class="fan-name">${item.jam1_fan}</span><span class="teacher-name">Jam ke-1</span>` : `<span style="color:var(--text-muted); font-size:0.85rem;">-</span>`}</td>
+                            <td>${matchJam2 ? `<span class="fan-name">${item.jam2_fan}</span><span class="teacher-name">Jam ke-2</span>` : `<span style="color:var(--text-muted); font-size:0.85rem;">-</span>`}</td>
+                        `;
+                        tableBaninBody.appendChild(tr);
+                    }
+                });
+
+                // Cari di Banat
+                kelompok.banat.forEach(item => {
+                    const matchJam1 = item.jam1_pengajar.toLowerCase() === namaPengajar.toLowerCase();
+                    const matchJam2 = item.jam2_pengajar.toLowerCase() === namaPengajar.toLowerCase();
+
+                    if (matchJam1 || matchJam2) {
+                        adaBanat = true;
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td style="font-weight:600; color:var(--pink-utama);">${hari} <br><span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">${item.kelas}</span></td>
+                            <td>${matchJam1 ? `<span class="fan-name">${item.jam1_fan}</span><span class="teacher-name">Jam ke-1</span>` : `<span style="color:var(--text-muted); font-size:0.85rem;">-</span>`}</td>
+                            <td>${matchJam2 ? `<span class="fan-name">${item.jam2_fan}</span><span class="teacher-name">Jam ke-2</span>` : `<span style="color:var(--text-muted); font-size:0.85rem;">-</span>`}</td>
+                        `;
+                        tableBanatBody.appendChild(tr);
+                    }
+                });
+            }
+
+            if (!adaBanin) {
+                tableBaninBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada jadwal mengajar di Banin</td></tr>`;
+            }
+            if (!adaBanat) {
+                tableBanatBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada jadwal mengajar di Banat</td></tr>`;
+            }
         }
 
-        // Event Pengubah Hari
-        btnDays.forEach(button => {
-            button.addEventListener('click', function() {
-                btnDays.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                renderJadwal(this.getAttribute('data-hari'));
-            });
-        });
-
-        // Fitur Pencarian Parsial & Case Insensitive
+        // ==========================================================================
+        // REALTIME AUTO-SUGGESTION PENCARIAN NAMA (HANYA NAMA SAJA)
+        // ==========================================================================
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
             
@@ -566,51 +705,58 @@
             }
 
             searchResultsContainer.innerHTML = '';
-            let hasilDitemukan = false;
+            
+            // Set penampung untuk mengambil daftar nama unik saja agar tidak duplikat
+            let daftarNamaCocok = new Set();
 
             for (const [hari, kelompok] of Object.entries(databaseJadwal)) {
                 kelompok.banin.forEach(item => {
-                    if (item.jam1_pengajar.toLowerCase().includes(query)) {
-                        addResultItem(item.jam1_pengajar, hari, `${item.kelas} Banin`, item.jam1_fan, "Jam ke-1");
-                        hasilDitemukan = true;
-                    }
-                    if (item.jam2_pengajar.toLowerCase().includes(query)) {
-                        addResultItem(item.jam2_pengajar, hari, `${item.kelas} Banin`, item.jam2_fan, "Jam ke-2");
-                        hasilDitemukan = true;
-                    }
+                    if (item.jam1_pengajar.toLowerCase().includes(query)) daftarNamaCocok.add(item.jam1_pengajar);
+                    if (item.jam2_pengajar.toLowerCase().includes(query)) daftarNamaCocok.add(item.jam2_pengajar);
                 });
-
                 kelompok.banat.forEach(item => {
-                    if (item.jam1_pengajar.toLowerCase().includes(query)) {
-                        addResultItem(item.jam1_pengajar, hari, `${item.kelas} Banat`, item.jam1_fan, "Jam ke-1");
-                        hasilDitemukan = true;
-                    }
-                    if (item.jam2_pengajar.toLowerCase().includes(query)) {
-                        addResultItem(item.jam2_pengajar, hari, `${item.kelas} Banat`, item.jam2_fan, "Jam ke-2");
-                        hasilDitemukan = true;
-                    }
+                    if (item.jam1_pengajar.toLowerCase().includes(query)) daftarNamaCocok.add(item.jam1_pengajar);
+                    if (item.jam2_pengajar.toLowerCase().includes(query)) daftarNamaCocok.add(item.jam2_pengajar);
                 });
             }
 
-            if (hasilDitemukan) {
+            if (daftarNamaCocok.size > 0) {
+                daftarNamaCocok.forEach(nama => {
+                    const div = document.createElement('div');
+                    div.className = 'search-item';
+                    div.innerHTML = `<span>${nama}</span> <span class="click-hint">Klik untuk lihat jadwal ➔</span>`;
+                    
+                    // Event ketika Nama Pengajar diklik
+                    div.addEventListener('click', () => {
+                        renderJadwalKhususPengajar(nama);
+                    });
+                    
+                    searchResultsContainer.appendChild(div);
+                });
                 searchResultsSection.classList.remove('hidden');
             } else {
-                searchResultsContainer.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Pengajar tidak ditemukan.</p>`;
+                searchResultsContainer.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem; padding:8px 12px;">Pengajar tidak ditemukan.</p>`;
                 searchResultsSection.classList.remove('hidden');
             }
         });
 
-        function addResultItem(nama, hari, kelas, fan, jam) {
-            const div = document.createElement('div');
-            div.className = 'search-item';
-            div.innerHTML = `
-                <div class="nama-ustaz">${nama}</div>
-                <div class="detail-mengajar">${hari} | ${kelas} | ${fan} | ${jam}</div>
-            `;
-            searchResultsContainer.appendChild(div);
-        }
+        // Event Pengubah Hari Normal
+        btnDays.forEach(button => {
+            button.addEventListener('click', function() {
+                btnDays.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                renderJadwalHarian(this.getAttribute('data-hari'));
+            });
+        });
 
-        // Fitur Mode Poster
+        // Tombol Reset kembali ke Tampilan Jadwal Harian Normal
+        btnResetView.addEventListener('click', () => {
+            renderJadwalHarian(hariTerpilih);
+        });
+
+        // ==========================================================================
+        // FITUR TAMBAHAN (POSTER, EXPORT & SHARE WA)
+        // ==========================================================================
         const btnPoster = document.getElementById('btn-poster');
         btnPoster.addEventListener('click', function() {
             document.body.classList.toggle('poster-mode');
@@ -623,9 +769,10 @@
             }
         });
 
-        // Fitur Ekspor Gambar JPG via html2canvas
         document.getElementById('btn-export').addEventListener('click', function() {
             const areaEkspor = document.getElementById('capture-area');
+            const namaFile = modeTampilan === "normal" ? `jadwal-${hariTerpilih.toLowerCase()}` : `jadwal-ustaz-${namaUstazTerpilih.toLowerCase().replace(/\s+/g, '-')}`;
+            
             const opsi = {
                 scale: 2, 
                 useCORS: true,
@@ -634,23 +781,25 @@
 
             html2canvas(areaEkspor, opsi).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `jadwal-${hariTerpilih.toLowerCase()}.jpg`;
+                link.download = `${namaFile}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.9);
                 link.click();
             });
         });
 
-        // Fitur Bagikan ke WhatsApp
         document.getElementById('btn-whatsapp').addEventListener('click', function() {
-            const teksPesan = encodeURIComponent(
-                `Jadwal Pelajaran dan Pengajar\nMuhadloroh Bustanul Ulum Daltim\n\nSilakan cek jadwal harian ter-update di aplikasi web.`
-            );
-            window.open(`https://api.whatsapp.com/send?text=${teksPesan}`, '_blank');
+            let teks = "";
+            if(modeTampilan === "normal") {
+                teks = `Jadwal Pelajaran dan Pengajar\nMuhadloroh Bustanul Ulum Daltim\nHari: ${hariTerpilih}`;
+            } else {
+                teks = `Jadwal Mengajar Khusus\nMuhadloroh Bustanul Ulum Daltim\nPengajar: ${namaUstazTerpilih}`;
+            }
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(teks)}`, '_blank');
         });
 
         // Inisialisasi awal aplikasi
         window.addEventListener('DOMContentLoaded', () => {
-            renderJadwal("Sabtu");
+            renderJadwalHarian("Sabtu");
         });
     </script>
 </body>
