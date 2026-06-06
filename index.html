@@ -968,14 +968,18 @@ try {
             document.getElementById('btn-pwa-install-menu').style.display = 'none';
         });
 
-        // INIT SERVICE WORKER OFFLINE
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `const CACHE_NAME='muhadloroh-v4'; self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['./', './index.html'])))); self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));`;
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(e=>console.log(e));
+     // INIT SERVICE WORKER OFFLINE (MODE BARU)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(registration => {
+                console.log('Service Worker berhasil didaftarkan dengan scope:', registration.scope);
+            })
+            .catch(error => {
+                console.error('Pendaftaran Service Worker gagal:', error);
             });
-        }
+    });
+}
 
         window.addEventListener('DOMContentLoaded', () => { 
             cekIdentitasUstadz(); 
