@@ -1,106 +1,657 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MUHADLOROH BUSTANUL ULUM DALTIM</title>
-<style>
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5ef}
-.header{background:linear-gradient(135deg,#0d5a2a,#0a3d1d);color:#fff;text-align:center;padding:28px 12px}
-.header h1{margin:0;font-size:42px}
-.sub{background:#fff;text-align:center;padding:18px;font-size:24px;font-weight:bold}
-.wrap{max-width:1400px;margin:auto;padding:15px}
-.top{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.title{font-size:32px;font-weight:bold;color:#0d5a2a}
-.days{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
-.days button{padding:10px 14px;border:none;border-radius:8px;background:#e6e6e6}
-.days button.active{background:#0d5a2a;color:white}
-input{width:100%;padding:12px;border-radius:10px;border:1px solid #ccc}
-.tables{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
-table{width:100%;border-collapse:collapse;background:#fff}
-th,td{border:1px solid #ddd;padding:10px;text-align:left}
-th{background:#0d5a2a;color:#fff}
-.banat th{background:#d81b60}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
-.btn{padding:12px 18px;border:none;border-radius:10px;color:#fff;cursor:pointer}
-.green{background:#0d5a2a}
-@media(max-width:900px){.top,.tables{grid-template-columns:1fr}.header h1{font-size:28px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUHADLOROH BUSTANUL ULUM DALTIM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CSS STYLES (ASSETS/STYLE.CSS)
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --hijau-tua: #14532d;
+            --hijau-terang: #16a34a;
+            --pink-utama: #db2777;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Header */
+        .main-header {
+            background-color: var(--hijau-tua);
+            color: #ffffff;
+            text-align: center;
+            padding: 24px 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .main-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .sub-header {
+            font-size: 0.95rem;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        /* Kolom Pencarian */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--hijau-terang);
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+        }
+
+        /* Pilihan Hari */
+        .days-filter {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .btn-day {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .btn-day.active {
+            background-color: var(--hijau-tua);
+            color: #ffffff;
+            border-color: var(--hijau-tua);
+        }
+
+        /* Hasil Pencarian */
+        .search-results {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            border-left: 4px solid var(--hijau-terang);
+            box-shadow: var(--shadow);
+        }
+
+        .search-results h3 {
+            margin-bottom: 12px;
+            color: var(--hijau-tua);
+        }
+
+        .search-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .search-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-item .nama-ustaz {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .search-item .detail-mengajar {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Kartu Informasi */
+        .capture-padding {
+            padding: 4px;
+        }
+
+        .info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card h3 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        /* Tata Letak Jadwal */
+        .schedule-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .schedule-block {
+            background: #ffffff;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .block-header {
+            padding: 12px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        .banin-zone .block-header { background-color: var(--hijau-tua); }
+        .banat-zone .block-header { background-color: var(--pink-utama); }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .banin-zone th { background-color: var(--hijau-tua); opacity: 0.95; }
+        .banat-zone th { background-color: var(--pink-utama); opacity: 0.95; }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .fan-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .teacher-name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Tombol Aksi */
+        .action-buttons {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .btn-primary { background-color: var(--hijau-terang); color: white; }
+        .btn-secondary { background-color: #64748b; color: white; }
+        .btn-success { background-color: #25d366; color: white; }
+
+        .btn:active { opacity: 0.9; }
+        .hidden { display: none !important; }
+
+        /* POSTER MODE STYLES */
+        body.poster-mode {
+            background-color: #ffffff;
+            padding: 0;
+        }
+        body.poster-mode .no-poster {
+            display: none !important;
+        }
+        body.poster-mode .action-buttons {
+            padding: 0 16px;
+        }
+
+        /* RESPONSIVE MEDIA QUERIES (DESKTOP) */
+        @media (min-width: 768px) {
+            .main-header h1 { font-size: 2rem; }
+            .days-filter { grid-template-columns: repeat(6, 1fr); }
+            .info-cards { flex-direction: row; }
+            .card { flex: 1; }
+            .schedule-grid { flex-direction: row; }
+            .schedule-block { flex: 1; }
+            .action-buttons { flex-direction: row; }
+        }
+    </style>
 </head>
 <body>
-<div id="poster">
-<div class="header">
-<h1>MUHADLOROH BUSTANUL ULUM DALTIM</h1>
-</div>
-<div class="sub">Jadwal Pelajaran dan Pengajar</div>
 
-<div class="wrap">
-<div class="top">
-<div class="card">
-<div class="title">Jadwal Hari Ini</div>
-<h2 id="hariIni">Rabu, Juni 2026</h2>
-</div>
-<div class="card">
-<b>Durasi Waktu Pelajaran</b><br><br>
-Jam ke-1 : 14.00 - 15.00 WIB<br>
-Jam ke-2 : 15.30 - 16.30 WIB
-</div>
-</div>
+    <header class="main-header">
+        <h1>MUHADLOROH BUSTANUL ULUM DALTIM</h1>
+        <p class="sub-header">Jadwal Pelajaran dan Pengajar</p>
+    </header>
 
-<div class="days">
-<button class="active">Sabtu</button>
-<button>Ahad</button>
-<button>Senin</button>
-<button>Selasa</button>
-<button>Rabu</button>
-<button>Kamis</button>
-</div>
+    <main class="container">
+        
+        <section class="control-section no-poster">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Cari ustaz / ustazah...">
+            </div>
 
-<input placeholder="Cari nama ustaz / ustazah...">
+            <div class="days-filter">
+                <button class="btn-day active" data-hari="Sabtu">Sabtu</button>
+                <button class="btn-day" data-hari="Ahad">Ahad</button>
+                <button class="btn-day" data-hari="Senin">Senin</button>
+                <button class="btn-day" data-hari="Selasa">Selasa</button>
+                <button class="btn-day" data-hari="Rabu">Rabu</button>
+                <button class="btn-day" data-hari="Kamis">Kamis</button>
+            </div>
+        </section>
 
-<div class="tables">
-<div>
-<h2>JADWAL BANIN</h2>
-<table>
-<tr><th>Kelas</th><th>Jam ke-1</th><th>Jam ke-2</th></tr>
-<tr><td>Kelas Satu</td><td>Fiqih<br>Hubailul Hakam</td><td>Nahwu<br>Hubailul Hakam</td></tr>
-<tr><td>Kelas Dua</td><td>Fiqih</td><td>Nahwu</td></tr>
-<tr><td>Kelas Tiga</td><td>Hadist</td><td>Tauhid</td></tr>
-</table>
-</div>
+        <section id="search-results-section" class="search-results hidden no-poster">
+            <h3>Hasil Pencarian Pengajar</h3>
+            <div id="search-results-container"></div>
+        </section>
 
-<div>
-<h2>JADWAL BANAT</h2>
-<table class="banat">
-<tr><th>Kelas</th><th>Jam ke-1</th><th>Jam ke-2</th></tr>
-<tr><td>Sugro</td><td>Akhlaq</td><td>B. Arab</td></tr>
-<tr><td>Kelas Satu</td><td>Fiqih</td><td>Fiqih</td></tr>
-<tr><td>Kelas Dua</td><td>Nahwu</td><td>Nahwu</td></tr>
-</table>
-</div>
-</div>
+        <div id="capture-area" class="capture-padding">
+            
+            <section class="info-cards">
+                <div class="card card-day">
+                    <h3>Jadwal Hari Ini</h3>
+                    <p id="current-day-text">Sabtu, 06 Juni 2026</p>
+                </div>
+                <div class="card card-time">
+                    <h3>Durasi Waktu Pelajaran</h3>
+                    <p><strong>Jam ke-1 :</strong> 14.00 – 15.00 WIB</p>
+                    <p><strong>Jam ke-2 :</strong> 15.30 – 16.30 WIB</p>
+                </div>
+            </section>
 
-<div class="actions">
-<button class="btn green" onclick="downloadPoster()">Export JPG</button>
-<button class="btn green" onclick="shareWA()">Share WhatsApp</button>
-</div>
-</div>
-</div>
+            <section class="schedule-grid">
+                <div class="schedule-block banin-zone">
+                    <div class="block-header">JADWAL BANIN</div>
+                    <div class="table-container">
+                        <table id="table-banin">
+                            <thead>
+                                <tr>
+                                    <th>Kelas</th>
+                                    <th>Jam ke-1</th>
+                                    <th>Jam ke-2</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script>
-function downloadPoster(){
- html2canvas(document.getElementById('poster')).then(canvas=>{
-   let a=document.createElement('a');
-   a.download='jadwal.jpg';
-   a.href=canvas.toDataURL('image/jpeg');
-   a.click();
- });
-}
-function shareWA(){
- window.open('https://wa.me/?text='+encodeURIComponent('Jadwal Muhadloroh hari ini'));
-}
-</script>
+                <div class="schedule-block banat-zone">
+                    <div class="block-header">JADWAL BANAT</div>
+                    <div class="table-container">
+                        <table id="table-banat">
+                            <thead>
+                                <tr>
+                                    <th>Kelas</th>
+                                    <th>Jam ke-1</th>
+                                    <th>Jam ke-2</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="action-buttons">
+            <button id="btn-poster" class="btn btn-secondary">Mode Poster</button>
+            <button id="btn-export" class="btn btn-primary">Export JPG</button>
+            <button id="btn-whatsapp" class="btn btn-success">Bagikan ke WhatsApp</button>
+        </section>
+
+    </main>
+
+    <script>
+        // Data internal yang telah dinormalisasi lengkap (Bagian 1 & Bagian 2)
+        const databaseJadwal = {
+            "Sabtu": {
+                "banin": [
+                    { "kelas": "Isti'dad A", "jam1_fan": "Shorof", "jam1_pengajar": "Abdurrahman Haris", "jam2_fan": "Tauhid", "jam2_pengajar": "Abdur Rouf" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Akhlak", "jam1_pengajar": "Aliman", "jam2_fan": "Akhlak", "jam2_pengajar": "Aliman" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Muhafadzoh", "jam1_pengajar": "Fathir Al-Fauzi", "jam2_fan": "Nahwu", "jam2_pengajar": "Fathir Al-Fauzi" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Shorof", "jam1_pengajar": "Ahmad Muzakki", "jam2_fan": "Nahwu", "jam2_pengajar": "Lora Izzul Fahmi" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Muhafadzoh", "jam1_pengajar": "Saifuddin Zuhri", "jam2_fan": "Nahwu", "jam2_pengajar": "Saifuddin Zuhri" }
+                ],
+                "banat": [
+                    { "kelas": "Sugro", "jam1_fan": "Tarikh", "jam1_pengajar": "Riyanti", "jam2_fan": "Tajwid", "jam2_pengajar": "Riyanti" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Nahwu", "jam1_pengajar": "Faizah", "jam2_fan": "Nahwu", "jam2_pengajar": "Faizah" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Fiqih", "jam1_pengajar": "Mila", "jam2_fan": "Shorof", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Tauhid", "jam1_pengajar": "Guru Tugas", "jam2_fan": "Nahwu", "jam2_pengajar": "Hilmi Haritsah" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Fiqih", "jam1_pengajar": "Wilda", "jam2_fan": "Nahwu", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Lima", "jam1_fan": "Fiqih", "jam1_pengajar": "Guru Tugas", "jam2_fan": "Ushul Fiqh", "jam2_pengajar": "Ahmad Muzakki" },
+                    { "kelas": "Kelas Enam", "jam1_fan": "Qowaidul Fiqih", "jam1_pengajar": "Taufiqurrahman", "jam2_fan": "Hadits", "jam2_pengajar": "Lora Ainul Yaqien" }
+                ]
+            },
+            "Ahad": {
+                "banin": [
+                    { "kelas": "Isti'dad A", "jam1_fan": "Nahwu", "jam1_pengajar": "Lora Izzul Fahmi", "jam2_fan": "Nahwu", "jam2_pengajar": "Lora Izzul Fahmi" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Fiqih", "jam1_pengajar": "Hubailul Hakam", "jam2_fan": "Fiqih", "jam2_pengajar": "Hubailul Hakam" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Nahwu", "jam1_pengajar": "Fathir Al-Fauzi", "jam2_fan": "Nahwu", "jam2_pengajar": "Fathir Al-Fauzi" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Fiqih", "jam1_pengajar": "Muhammad David", "jam2_fan": "Fiqih", "jam2_pengajar": "Muhammad David" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Fiqih", "jam1_pengajar": "Taufiqurrahman", "jam2_fan": "Fiqih", "jam2_pengajar": "Taufiqurrahman" }
+                ],
+                "banat": [
+                    { "kelas": "Sugro", "jam1_fan": "Hadits", "jam1_pengajar": "Luluk", "jam2_fan": "Tauhid", "jam2_pengajar": "Roifah" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Akhlak", "jam1_pengajar": "Ana Naiba", "jam2_fan": "Tarikh", "jam2_pengajar": "Ana Naiba" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Nahwu", "jam1_pengajar": "Fifin", "jam2_fan": "Tauhid", "jam2_pengajar": "Luluk" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Nahwu", "jam1_pengajar": "Hilmi Haritsah", "jam2_fan": "Nahwu", "jam2_pengajar": "Hilmi Haritsah" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Fiqih", "jam1_pengajar": "Wilda", "jam2_fan": "Fiqih", "jam2_pengajar": "Wilda" },
+                    { "kelas": "Kelas Lima", "jam1_fan": "Fiqih", "jam1_pengajar": "Guru Tugas", "jam2_fan": "Qowaidul Fiqih", "jam2_pengajar": "Saiful Badri" },
+                    { "kelas": "Kelas Enam", "jam1_fan": "Nahwu", "jam1_pengajar": "Saiful Badri", "jam2_fan": "Ushul Fiqh", "jam2_pengajar": "Ahmad Muzakki" }
+                ]
+            },
+            "Senin": {
+                "banin": [
+                    { "kelas": "Isti'dad A", "jam1_fan": "Fiqih", "jam1_pengajar": "Agil Sahaly", "jam2_fan": "Fiqih", "jam2_pengajar": "Agil Sahaly" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Nahwu", "jam1_pengajar": "Hubailul Hakam", "jam2_fan": "Nahwu", "jam2_pengajar": "Hubailul Hakam" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Fiqih", "jam1_pengajar": "Fathir Al-Fauzi", "jam2_fan": "Fiqih", "jam2_pengajar": "Fathir Al-Fauzi" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Fiqih", "jam1_pengajar": "Muhammad David", "jam2_fan": "Sorogan", "jam2_pengajar": "Muhammad David" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Nahwu", "jam1_pengajar": "Saifuddin Zuhri", "jam2_fan": "Nahwu", "jam2_pengajar": "Saifuddin Zuhri" }
+                ],
+                "banat": [
+                    { "kelas": "Sugro", "jam1_fan": "Shorof", "jam1_pengajar": "Liyadzah", "jam2_fan": "Shorof", "jam2_pengajar": "Liyadzah" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Bahasa Arab", "jam1_pengajar": "Maghfiroh", "jam2_fan": "Nahwu", "jam2_pengajar": "Faizah" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Fiqih", "jam1_pengajar": "Amilatul Fauziah", "jam2_fan": "Hadits", "jam2_pengajar": "Maghfiroh" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Bahasa Arab", "jam1_pengajar": "Neng Zamiroh", "jam2_fan": "Risalatul Mahid", "jam2_pengajar": "Neng Sinta" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Risalatul Mahid", "jam1_pengajar": "Neng Sinta", "jam2_fan": "Bahasa Arab", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Lima", "jam1_fan": "Bahasa Arab", "jam1_pengajar": "Imdad Fahmi", "jam2_fan": "Hadits", "jam2_pengajar": "Imdad Fahmi" },
+                    { "kelas": "Kelas Enam", "jam1_fan": "Nahwu", "jam1_pengajar": "Saiful Badri", "jam2_fan": "Nahwu", "jam2_pengajar": "Saiful Badri" }
+                ]
+            },
+            "Selasa": {
+                "banin": [
+                    { "kelas": "Isti'dad A", "jam1_fan": "Pegon", "jam1_pengajar": "Abdullah Sholeh", "jam2_fan": "Nahwu", "jam2_pengajar": "Lora Izzul Fahmi" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Fiqih", "jam1_pengajar": "Hubailul Hakam", "jam2_fan": "Shorof", "jam2_pengajar": "Abdur Rosyid" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Shorof", "jam1_pengajar": "Abdur Rosyid", "jam2_fan": "Fiqih", "jam2_pengajar": "Fathir Al-Fauzi" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Nahwu", "jam1_pengajar": "Lora Izzul Fahmi", "jam2_fan": "Tarikh", "jam2_pengajar": "Lora Ainul Yaqien" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Tarikh", "jam1_pengajar": "Lora Ainul Yaqien", "jam2_fan": "Akhlak", "jam2_pengajar": "Hasan Baisuni" }
+                ],
+                "banat": [
+                    { "kelas": "Sugro", "jam1_fan": "Nahwu", "jam1_pengajar": "Nasya", "jam2_fan": "Nahwu", "jam2_pengajar": "Nasya" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Shorof", "jam1_pengajar": "Liyadzah", "jam2_fan": "Tauhid", "jam2_pengajar": "Nabila" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Akhlak", "jam1_pengajar": "Maghfiroh", "jam2_fan": "Tarikh", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Hadits", "jam1_pengajar": "Neng Zamiroh", "jam2_fan": "Akhlak", "jam2_pengajar": "Neng Hanifah" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Hadits", "jam1_pengajar": "Neng Hanifah", "jam2_fan": "Ushul Fiqh", "jam2_pengajar": "Ahmad Muzakki" },
+                    { "kelas": "Kelas Lima", "jam1_fan": "Nahwu", "jam1_pengajar": "Ahmad Muzakki", "jam2_fan": "Fiqih", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Enam", "jam1_fan": "Tafsir", "jam1_pengajar": "Hasan Baisuni", "jam2_fan": "Tasawuf", "jam2_pengajar": "Lora Abdul Fattah" }
+                ]
+            },
+            "Rabu": {
+                "banin": [
+                    { "kelas": "Isti'dad A", "jam1_fan": "Nahwu", "jam1_pengajar": "Lora Izzul Fahmi", "jam2_fan": "Nahwu", "jam2_pengajar": "Lora Izzul Fahmi" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Muhafadzoh", "jam1_pengajar": "Hubailul Hakam", "jam2_fan": "Nahwu", "jam2_pengajar": "Hubailul Hakam" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Tarikh", "jam1_pengajar": "Hamdan Yuafi", "jam2_fan": "Akhlak", "jam2_pengajar": "Hamdan Yuafi" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Hadits", "jam1_pengajar": "Lora Abdul Fattah", "jam2_fan": "Tauhid", "jam2_pengajar": "Abdul Mu'thi" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Tauhid", "jam1_pengajar": "Abdul Mu'thi", "jam2_fan": "Hadits", "jam2_pengajar": "Lora Abdul Fattah" }
+                ],
+                "banat": [
+                    { "kelas": "Sugro", "jam1_fan": "Akhlak", "jam1_pengajar": "Roifah", "jam2_fan": "Bahasa Arab", "jam2_pengajar": "Diana" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Fiqih", "jam1_pengajar": "Meisi", "jam2_fan": "Fiqih", "jam2_pengajar": "Meisi" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Nahwu", "jam1_pengajar": "Fifin", "jam2_fan": "Nahwu", "jam2_pengajar": "Fifin" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Tarikh", "jam1_pengajar": "Lora Ainul Yaqien", "jam2_fan": "Shorof", "jam2_pengajar": "Khoiron" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Qowaidul Fiqih", "jam1_pengajar": "Khoiron", "jam2_fan": "Nahwu", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Lima", "jam1_fan": "Nahwu", "jam1_pengajar": "Ahmad Muzakki", "jam2_fan": "Nahwu", "jam2_pengajar": "Ahmad Muzakki" },
+                    { "kelas": "Kelas Enam", "jam1_fan": "Fiqih", "jam1_pengajar": "Abdur Rozaq", "jam2_fan": "Fiqih", "jam2_pengajar": "Abdur Rozaq" }
+                ]
+            },
+            "Kamis": {
+                "banin": [
+                    { "kelas": "Isti'dad A", "jam1_fan": "Fiqih", "jam1_pengajar": "Agil Sahaly", "jam2_fan": "Fiqih", "jam2_pengajar": "Agil Sahaly" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Tauhid", "jam1_pengajar": "Khoiron", "jam2_fan": "Tajwid", "jam2_pengajar": "Abdullah Sholeh" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Tajwid", "jam1_pengajar": "Abdullah Sholeh", "jam2_fan": "Tauhid", "jam2_pengajar": "Khoiron" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Akhlak", "jam1_pengajar": "Abdur Rozaq", "jam2_fan": "Muhafadzoh", "jam2_pengajar": "Lora Izzul Fahmi" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Fiqih", "jam1_pengajar": "Taufiqurrahman", "jam2_fan": "Sorogan", "jam2_pengajar": "Taufiqurrahman" }
+                ],
+                "banat": [
+                    { "kelas": "Sugro", "jam1_fan": "Fiqih", "jam1_pengajar": "Nabila", "jam2_fan": "Fiqih", "jam2_pengajar": "Nabila" },
+                    { "kelas": "Kelas Satu", "jam1_fan": "Fiqih", "jam1_pengajar": "Meisi", "jam2_fan": "Tajwid", "jam2_pengajar": "Liyadzah" },
+                    { "kelas": "Kelas Dua", "jam1_fan": "Fiqih", "jam1_pengajar": "Mila", "jam2_fan": "I'lal", "jam2_pengajar": "Guru Tugas" },
+                    { "kelas": "Kelas Tiga", "jam1_fan": "Fiqih", "jam1_pengajar": "Neng Zamiroh", "jam2_fan": "Fiqih", "jam2_pengajar": "Neng Zamiroh" },
+                    { "kelas": "Kelas Empat", "jam1_fan": "Nahwu", "jam1_pengajar": "Guru Tugas", "jam2_fan": "Akhlak", "jam2_pengajar": "Neng Sinta" },
+                    { "kelas": "Kelas Lima", "jam1_fan": "Mustholah Hadits", "jam1_pengajar": "Lora Izzul Fahmi", "jam2_fan": "Tauhid", "jam2_pengajar": "As'adus Shodiqin" },
+                    { "kelas": "Kelas Enam", "jam1_fan": "Tauhid", "jam1_pengajar": "As'adus Shodiqin", "jam2_fan": "Fiqih", "jam2_pengajar": "Abdur Rozaq" }
+                ]
+            }
+        };
+
+        let hariTerpilih = "Sabtu";
+
+        // DOM Elements
+        const currentDayText = document.getElementById('current-day-text');
+        const tableBaninBody = document.querySelector('#table-banin tbody');
+        const tableBanatBody = document.querySelector('#table-banat tbody');
+        const btnDays = document.querySelectorAll('.btn-day');
+        const searchInput = document.getElementById('search-input');
+        const searchResultsSection = document.getElementById('search-results-section');
+        const searchResultsContainer = document.getElementById('search-results-container');
+
+        // Render Tabel Utama
+        function renderJadwal(hari) {
+            hariTerpilih = hari;
+            currentDayText.textContent = `${hari}, 06 Juni 2026`;
+
+            tableBaninBody.innerHTML = '';
+            tableBanatBody.innerHTML = '';
+
+            const dataHari = databaseJadwal[hari] || { banin: [], banat: [] };
+
+            // Render Banin
+            if (dataHari.banin.length === 0) {
+                tableBaninBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada jadwal</td></tr>`;
+            } else {
+                dataHari.banin.forEach(item => tableBaninBody.appendChild(createRow(item)));
+            }
+
+            // Render Banat
+            if (dataHari.banat.length === 0) {
+                tableBanatBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada jadwal</td></tr>`;
+            } else {
+                dataHari.banat.forEach(item => tableBanatBody.appendChild(createRow(item)));
+            }
+        }
+
+        function createRow(data) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight:600;">${data.kelas}</td>
+                <td>
+                    <span class="fan-name">${data.jam1_fan}</span>
+                    <span class="teacher-name">${data.jam1_pengajar}</span>
+                </td>
+                <td>
+                    <span class="fan-name">${data.jam2_fan}</span>
+                    <span class="teacher-name">${data.jam2_pengajar}</span>
+                </td>
+            `;
+            return tr;
+        }
+
+        // Event Pengubah Hari
+        btnDays.forEach(button => {
+            button.addEventListener('click', function() {
+                btnDays.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                renderJadwal(this.getAttribute('data-hari'));
+            });
+        });
+
+        // Fitur Pencarian Parsial & Case Insensitive
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            
+            if (query === '') {
+                searchResultsSection.classList.add('hidden');
+                return;
+            }
+
+            searchResultsContainer.innerHTML = '';
+            let hasilDitemukan = false;
+
+            for (const [hari, kelompok] of Object.entries(databaseJadwal)) {
+                kelompok.banin.forEach(item => {
+                    if (item.jam1_pengajar.toLowerCase().includes(query)) {
+                        addResultItem(item.jam1_pengajar, hari, `${item.kelas} Banin`, item.jam1_fan, "Jam ke-1");
+                        hasilDitemukan = true;
+                    }
+                    if (item.jam2_pengajar.toLowerCase().includes(query)) {
+                        addResultItem(item.jam2_pengajar, hari, `${item.kelas} Banin`, item.jam2_fan, "Jam ke-2");
+                        hasilDitemukan = true;
+                    }
+                });
+
+                kelompok.banat.forEach(item => {
+                    if (item.jam1_pengajar.toLowerCase().includes(query)) {
+                        addResultItem(item.jam1_pengajar, hari, `${item.kelas} Banat`, item.jam1_fan, "Jam ke-1");
+                        hasilDitemukan = true;
+                    }
+                    if (item.jam2_pengajar.toLowerCase().includes(query)) {
+                        addResultItem(item.jam2_pengajar, hari, `${item.kelas} Banat`, item.jam2_fan, "Jam ke-2");
+                        hasilDitemukan = true;
+                    }
+                });
+            }
+
+            if (hasilDitemukan) {
+                searchResultsSection.classList.remove('hidden');
+            } else {
+                searchResultsContainer.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Pengajar tidak ditemukan.</p>`;
+                searchResultsSection.classList.remove('hidden');
+            }
+        });
+
+        function addResultItem(nama, hari, kelas, fan, jam) {
+            const div = document.createElement('div');
+            div.className = 'search-item';
+            div.innerHTML = `
+                <div class="nama-ustaz">${nama}</div>
+                <div class="detail-mengajar">${hari} | ${kelas} | ${fan} | ${jam}</div>
+            `;
+            searchResultsContainer.appendChild(div);
+        }
+
+        // Fitur Mode Poster
+        const btnPoster = document.getElementById('btn-poster');
+        btnPoster.addEventListener('click', function() {
+            document.body.classList.toggle('poster-mode');
+            if (document.body.classList.contains('poster-mode')) {
+                this.textContent = "Keluar Mode Poster";
+                this.style.backgroundColor = "#ef4444";
+            } else {
+                this.textContent = "Mode Poster";
+                this.style.backgroundColor = "#64748b";
+            }
+        });
+
+        // Fitur Ekspor Gambar JPG via html2canvas
+        document.getElementById('btn-export').addEventListener('click', function() {
+            const areaEkspor = document.getElementById('capture-area');
+            const opsi = {
+                scale: 2, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            };
+
+            html2canvas(areaEkspor, opsi).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `jadwal-${hariTerpilih.toLowerCase()}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+                link.click();
+            });
+        });
+
+        // Fitur Bagikan ke WhatsApp
+        document.getElementById('btn-whatsapp').addEventListener('click', function() {
+            const teksPesan = encodeURIComponent(
+                `Jadwal Pelajaran dan Pengajar\nMuhadloroh Bustanul Ulum Daltim\n\nSilakan cek jadwal harian ter-update di aplikasi web.`
+            );
+            window.open(`https://api.whatsapp.com/send?text=${teksPesan}`, '_blank');
+        });
+
+        // Inisialisasi awal aplikasi
+        window.addEventListener('DOMContentLoaded', () => {
+            renderJadwal("Sabtu");
+        });
+    </script>
 </body>
 </html>
