@@ -652,11 +652,31 @@
             currentDayText.textContent = `${hari}, ${dateStr}`;
 
             // Hitung Tanggal Hijriah
-            try {
-                const opsiHijri = { day: 'numeric', month: 'long', year: 'numeric' };
-                const teksHijri = new Intl.DateTimeFormat('id-TN-u-ca-islamic', opsiHijri).format(new Date());
-                document.getElementById('hijri-date-text').textContent = teksHijri + " H";
-            } catch (e) { document.getElementById('hijri-date-text').textContent = ""; }
+try {
+    // Gunakan format angka standar untuk mengambil bagian-bagian tanggal
+    const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
+    const parts = formatter.formatToParts(new Date());
+    
+    let d, m, y;
+    parts.forEach(part => {
+        if (part.type === 'day') d = part.value;
+        if (part.type === 'month') m = part.value;
+        if (part.type === 'year') y = part.value;
+    });
+
+    // Array nama bulan Hijriyah (Index 0 = Muharram)
+    const bulanHijriah = [
+        "Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", 
+        "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", 
+        "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"
+    ];
+    
+    // Konversi month 'm' menjadi integer lalu kurangi 1 untuk mencocokkan index array
+    const teksHijri = `${d} ${bulanHijriah[parseInt(m) - 1]} ${y}`;
+    document.getElementById('hijri-date-text').textContent = teksHijri + " H";
+} catch (e) { 
+    document.getElementById('hijri-date-text').textContent = ""; 
+}
 
             // Logika Hari Jumat
             const fridayBanner = document.getElementById('friday-holiday');
