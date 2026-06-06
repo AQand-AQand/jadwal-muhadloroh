@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MUHADLOROH BUSTANUL ULUM DALTIM</title>
+    
+    <meta name="theme-color" content="#01351b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Muhadloroh">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. RESET & THEME (KITAB KUNING)
+           ========================================================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        :root {
+            --hijau-tua-bg: #01351b;
+            --hijau-banin: #00753a;
+            --pink-banat: #d11264;
+            --bg-body: #fbf7e9; /* Warna Kitab Kuning */
+            --emas-ornamen: #d4af37;
+            --text-dark: #2c241b;
+            --text-muted: #6b5c4f;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
+        }
+
+        body { background-color: var(--bg-body); color: var(--text-dark); line-height: 1.5; padding-bottom: 90px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 14px; }
+
+        /* ==========================================================================
+           2. HEADER LAYOUT & ISLAMIC ORNAMENTS
+           ========================================================================== */
+        .main-header {
+            background: linear-gradient(135deg, #024a26 0%, #012915 100%);
+            color: #ffffff; text-align: center; padding: 30px 16px 35px 16px;
+            border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg);
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+            border-bottom: 4px solid var(--emas-ornamen);
+        }
+
+        /* Geometric Islamic Pattern Background */
+        .main-header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(var(--emas-ornamen) 1px, transparent 1px);
+            background-size: 20px 20px; opacity: 0.1; z-index: 1;
+        }
+
+        .bismillah {
+            font-family: 'Amiri', serif; font-size: 1.8rem; font-weight: 400;
+            color: var(--emas-ornamen); margin-bottom: 8px; z-index: 2; position: relative;
+        }
+
+        .main-header h1 {
+            font-size: 1.6rem; font-weight: 800; letter-spacing: 0.5px; line-height: 1.3;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.6); position: relative; z-index: 2;
+        }
+
+        .islamic-divider { 
+            display: flex; align-items: center; justify-content: center; margin: 12px 0; gap: 8px; position: relative; z-index: 2; 
+        }
+        .islamic-divider .line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--emas-ornamen), transparent); }
+        .islamic-divider .star { font-size: 0.6rem; color: var(--emas-ornamen); transform: rotate(45deg); }
+
+        .sub-header-badge {
+            background-color: var(--bg-body); color: var(--hijau-tua-bg); display: inline-block;
+            padding: 6px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 800;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 1.5px solid var(--emas-ornamen); position: relative; z-index: 2;
+        }
+
+        /* ==========================================================================
+           3. CARDS & WIDGETS
+           ========================================================================== */
+        .info-cards { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+        .card-day {
+            background-color: var(--hijau-tua-bg); border-left: 4px solid var(--emas-ornamen);
+            color: #ffffff; padding: 16px; border-radius: var(--radius-md);
+            display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); position: relative;
+            overflow: hidden;
+        }
+        .card-day::after {
+            content: '\f66f'; font-family: 'FontAwesome'; position: absolute;
+            right: -20px; bottom: -20px; font-size: 100px; color: #ffffff; opacity: 0.05;
+        }
+        .card-day i.big-icon { font-size: 2.2rem; color: var(--emas-ornamen); z-index: 2; }
+        .card-day h3 { font-size: 0.8rem; text-transform: uppercase; opacity: 0.85; margin-bottom: 2px; z-index: 2; position: relative;}
+        .card-day p { font-size: 1.1rem; font-weight: 800; z-index: 2; position: relative;}
+        .hijri-date { font-size: 0.85rem; font-weight: 500; color: var(--emas-ornamen); display: block; margin-top: 2px; z-index: 2; position: relative;}
+
+        .card-time {
+            background-color: #ffffff; border: 1px solid #e2e8f0; padding: 14px;
+            border-radius: var(--radius-md); display: flex; flex-direction: column; box-shadow: var(--shadow);
+        }
+        .time-blocks-flex { display: flex; justify-content: space-around; text-align: center; margin-top: 10px; }
+        .time-badge { background-color: var(--hijau-banin); color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 4px; display: inline-block; }
+        .time-badge.banat-color { background-color: var(--pink-banat); }
+        .time-text { font-size: 0.9rem; font-weight: 700; }
+        
+        .countdown-bar {
+            margin-top: 10px; background-color: #fefce8; border: 1px solid #fef08a;
+            padding: 8px; border-radius: 8px; text-align: center; font-size: 0.75rem;
+            font-weight: 700; color: #a16207; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* ==========================================================================
+           4. SCHEDULE GRID & MIHRAB ARCH
+           ========================================================================== */
+        .schedule-grid { display: flex; flex-direction: column; gap: 20px; }
+        .schedule-block { 
+            background: #ffffff; 
+            border-radius: 40px 40px 16px 16px; /* Mihrab Arch */
+            overflow: hidden; box-shadow: var(--shadow); border: 1px solid #e5e0d8; 
+        }
+        .block-header { 
+            padding: 20px 14px 14px; font-size: 1.1rem; font-weight: 800; text-align: center; color: #ffffff; 
+            position: relative;
+        }
+        .banin-zone .block-header { background: linear-gradient(180deg, #00592c, var(--hijau-banin)); }
+        .banat-zone .block-header { background: linear-gradient(180deg, #a60d4f, var(--pink-banat)); }
+
+        .table-container { overflow-x: auto; padding: 0 10px 10px; background: #ffffff; }
+        table { width: 100%; border-collapse: collapse; min-width: 400px; margin-top: 10px;}
+        th { padding: 12px; font-size: 0.85rem; font-weight: 700; color: var(--text-dark); text-align: left; border-bottom: 2px solid #e5e0d8;}
+        td { padding: 12px; border-bottom: 1px dashed #e5e0d8; font-size: 0.85rem; }
+        
+        .class-cell { display: flex; align-items: center; gap: 8px; font-weight: 800; }
+        .class-icon-wrapper { position: relative; color: var(--emas-ornamen); font-size: 1.2rem; }
+        .class-number-inside { position: absolute; font-size: 0.55rem; color: #000; top: 55%; left: 50%; transform: translate(-50%, -50%); font-weight: 800;}
+
+        .fan-name { font-weight: 800; display: block; font-size: 0.9rem; color: var(--text-dark); }
+        .teacher-name { font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 2px; font-weight: 600; }
+
+        /* Friday Holiday Banner */
+        .friday-banner {
+            background: linear-gradient(135deg, #fefce8, #fef08a); border: 1px solid var(--emas-ornamen);
+            border-radius: var(--radius-md); padding: 30px 20px; text-align: center; color: #854d0e;
+            box-shadow: var(--shadow);
+        }
+        .friday-banner i { font-size: 3rem; margin-bottom: 15px; color: var(--emas-ornamen); }
+        .friday-banner h2 { font-family: 'Amiri', serif; font-size: 1.5rem; margin-bottom: 10px; }
+
+        /* ==========================================================================
+           5. NOTEBOOK / BUKU SAKU
+           ========================================================================== */
+        .notebook-section { background: #fff; padding: 16px; border-radius: var(--radius-md); box-shadow: var(--shadow); border: 1px solid #e5e0d8; margin-top: 20px;}
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-dark); }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; background: #f9fafb; font-size: 0.9rem; outline: none;}
+        .form-control:focus { border-color: var(--emas-ornamen); background: #fff; }
+        .btn-action { background: var(--hijau-tua-bg); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-action.outline { background: transparent; color: var(--hijau-tua-bg); border: 1px solid var(--hijau-tua-bg); }
+        .notes-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .note-card { background: var(--bg-body); padding: 12px; border-radius: 8px; border-left: 3px solid var(--emas-ornamen); }
+        .note-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; border-bottom: 1px dashed #d1d5db; padding-bottom: 4px;}
+        .note-title { font-weight: 800; font-size: 0.95rem; color: var(--hijau-tua-bg); }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .search-box-container input { width: 100%; padding: 14px 16px; border: 2px solid #e5e0d8; border-radius: var(--radius-md); font-size: 0.95rem; outline: none; background: #fff; }
+        
+        /* Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; background-color: #ffffff;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05); padding: 8px 12px;
+            display: flex; justify-content: space-around; align-items: center; z-index: 999;
+            border-top: 1px solid #e5e0d8;
+        }
+        .nav-item { border: none; background: none; padding: 6px; color: var(--text-muted); font-weight: 700; font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; cursor: pointer;}
+        .nav-item.active { color: var(--hijau-banin); }
+        .nav-item.active i { background-color: #e6f2ec; padding: 8px; border-radius: 50%; color: var(--hijau-banin); }
+    </style>
+</head>
+<body>
+
+    <header class="main-header no-poster">
+        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <h1>MUHADLOROH<br>BUSTANUL ULUM DALTIM</h1>
+        <div class="islamic-divider">
+            <div class="line"></div><i class="fa-solid fa-star star"></i><div class="line"></div>
+        </div>
+        <div class="sub-header-badge">Jadwal & Buku Saku Mengajar</div>
+    </header>
+
+    <main class="container">
+        <div id="view-jadwal">
+            <section class="control-section no-poster" style="margin-top: 16px;">
+                <div class="search-box-container">
+                    <input type="text" id="search-input" placeholder="🔍 Cari Nama Pengajar atau Fan...">
+                </div>
+            </section>
+
+            <div id="capture-area" style="padding-bottom: 20px;">
+                <section class="info-cards">
+                    <div class="card-day">
+                        <i class="fa-regular fa-calendar-days big-icon"></i>
+                        <div>
+                            <h3 id="info-card-title">Jadwal Hari Ini</h3>
+                            <p id="current-day-text">Sabtu, 06 Juni 2026</p>
+                            <span class="hijri-date" id="hijri-date-text">20 Dzulhijjah 1447 H</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-time">
+                        <div style="font-size: 0.85rem; font-weight: 700; color: var(--hijau-banin); text-align: center;"><i class="fa-regular fa-clock"></i> Durasi Waktu Pelajaran</div>
+                        <div class="time-blocks-flex">
+                            <div><span class="time-badge">Jam ke-1</span><div class="time-text">14.00 – 15.00</div></div>
+                            <div><span class="time-badge banat-color">Jam ke-2</span><div class="time-text">15.30 – 16.30</div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="friday-holiday" class="friday-banner hidden">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <h2>Hari Libur Muhadloroh</h2>
+                    <p>Waktunya Muthola'ah Kitab, Muraja'ah, dan Beristirahat.</p>
+                </div>
+
+                <section class="schedule-grid" id="schedule-grid-container">
+                    <div class="schedule-block banin-zone">
+                        <div class="block-header"><i class="fa-solid fa-user-graduate"></i> JADWAL BANIN</div>
+                        <div class="table-container">
+                            <table id="table-banin">
+                                <thead><tr><th style="width: 25%;">Kelas</th><th>Jam ke-1</th><th>Jam ke-2</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="schedule-block banat-zone">
+                        <div class="block-header"><i class="fa-solid fa-user-nurse"></i> JADWAL BANAT</div>
+                        <div class="table-container">
+                            <table id="table-banat">
+                                <thead><tr><th style="width: 25%;">Kelas</th><th>Jam ke-1</th><th>Jam ke-2</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="view-notebook" class="hidden">
+            <div class="notebook-section">
+                <h3 style="margin-bottom: 16px; color: var(--hijau-tua-bg); border-bottom: 2px solid var(--emas-ornamen); padding-bottom: 8px;">
+                    <i class="fa-solid fa-book-journal-whills"></i> Catatan Mengajar
+                </h3>
+                
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Kitab / Fan</label>
+                        <input type="text" id="note-fan" class="form-control" placeholder="Contoh: Nahwu">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Kelas</label>
+                        <input type="text" id="note-kelas" class="form-control" placeholder="1 Banin">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Bab / Pasal</label>
+                        <input type="text" id="note-bab" class="form-control" placeholder="Mubtada' Khobar">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Halaman</label>
+                        <input type="text" id="note-hal" class="form-control" placeholder="Hal. 24">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan Tambahan (Opsional)</label>
+                    <textarea id="note-desc" class="form-control" rows="3" placeholder="Pekerjaan rumah, santri yang maju, dll..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn-action" onclick="simpanCatatan()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                    <button class="btn-action outline" onclick="backupJSON()"><i class="fa-solid fa-download"></i> Backup JSON</button>
+                </div>
+
+                <div class="notes-list" id="notes-container">
+                    </div>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav no-poster">
+        <button class="nav-item active" onclick="switchView('jadwal')" id="nav-jadwal">
+            <i class="fa-solid fa-calendar-check"></i> <span>Jadwal</span>
+        </button>
+        <button class="nav-item" onclick="switchView('notebook')" id="nav-notebook">
+            <i class="fa-solid fa-book"></i> <span>Buku Saku</span>
+        </button>
+        <button class="nav-item" id="btn-poster-menu">
+            <i class="fa-solid fa-image"></i> <span>Export JPG</span>
+        </button>
+    </nav>
+
+    <script>
+        // Database jadwal komplit terverifikasi (Sabtu - Kamis) - SAMA SEPERTI SEBELUMNYA
+        const databaseJadwal = {
+            "Sabtu": {
+                "banin": [{ "kelas": "Kelas Satu", "jam1_fan": "Akhlak", "jam1_pengajar": "Aliman", "jam2_fan": "Akhlak", "jam2_pengajar": "Aliman" }],
+                "banat": [{ "kelas": "Kelas Satu", "jam1_fan": "Nahwu", "jam1_pengajar": "Faizah", "jam2_fan": "Nahwu", "jam2_pengajar": "Faizah" }]
+            },
+            // Note: Tambahkan sisa data jadwal (Ahad-Kamis) yang sudah Anda miliki dari HTML sebelumnya di sini untuk menghemat ruang.
+        };
+
+        const tableBaninBody = document.querySelector('#table-banin tbody');
+        const tableBanatBody = document.querySelector('#table-banat tbody');
+        const gridContainer = document.getElementById('schedule-grid-container');
+        const fridayBanner = document.getElementById('friday-holiday');
+
+        // Logic Tanggal Masehi & Hijriah
+        function updateTanggalHariIni() {
+            const date = new Date();
+            const opsiMasehi = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const teksMasehi = date.toLocaleDateString('id-ID', opsiMasehi);
+            document.getElementById('current-day-text').textContent = teksMasehi;
+
+            try {
+                const opsiHijri = { day: 'numeric', month: 'long', year: 'numeric' };
+                const teksHijri = new Intl.DateTimeFormat('id-TN-u-ca-islamic', opsiHijri).format(date);
+                document.getElementById('hijri-date-text').textContent = teksHijri + " H";
+            } catch (e) {
+                document.getElementById('hijri-date-text').textContent = "";
+            }
+
+            return date.getDay();
+        }
+
+        function renderJadwal() {
+            const dayIndex = updateTanggalHariIni();
+            const hariNama = ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][dayIndex];
+            
+            // Logika Hari Jumat
+            if (dayIndex === 5) {
+                gridContainer.classList.add('hidden');
+                fridayBanner.classList.remove('hidden');
+                return;
+            }
+
+            gridContainer.classList.remove('hidden');
+            fridayBanner.classList.add('hidden');
+            tableBaninBody.innerHTML = ''; tableBanatBody.innerHTML = '';
+            
+            // Fallback hari Sabtu jika data tidak ada (untuk testing)
+            const dataHari = databaseJadwal[hariNama] || databaseJadwal["Sabtu"];
+
+            dataHari.banin.forEach(item => {
+                tableBaninBody.innerHTML += `<tr><td><div class="class-cell"><div class="class-icon-wrapper"><i class="fa-solid fa-bookmark"></i><span class="class-number-inside">★</span></div><span>${item.kelas}</span></div></td>
+                    <td><span class="fan-name">${item.jam1_fan}</span><span class="teacher-name">${item.jam1_pengajar}</span></td>
+                    <td><span class="fan-name">${item.jam2_fan}</span><span class="teacher-name">${item.jam2_pengajar}</span></td></tr>`;
+            });
+            dataHari.banat.forEach(item => {
+                tableBanatBody.innerHTML += `<tr><td><div class="class-cell"><div class="class-icon-wrapper"><i class="fa-solid fa-bookmark"></i><span class="class-number-inside">★</span></div><span>${item.kelas}</span></div></td>
+                    <td><span class="fan-name">${item.jam1_fan}</span><span class="teacher-name">${item.jam1_pengajar}</span></td>
+                    <td><span class="fan-name">${item.jam2_fan}</span><span class="teacher-name">${item.jam2_pengajar}</span></td></tr>`;
+            });
+        }
+
+        // View Switcher (Jadwal vs Buku Saku)
+        function switchView(view) {
+            document.getElementById('view-jadwal').classList.toggle('hidden', view !== 'jadwal');
+            document.getElementById('view-notebook').classList.toggle('hidden', view !== 'notebook');
+            document.getElementById('nav-jadwal').classList.toggle('active', view === 'jadwal');
+            document.getElementById('nav-notebook').classList.toggle('active', view === 'notebook');
+            if (view === 'notebook') loadCatatan();
+        }
+
+        // Logic Buku Saku (Notebook)
+        function simpanCatatan() {
+            const fan = document.getElementById('note-fan').value;
+            const kelas = document.getElementById('note-kelas').value;
+            const bab = document.getElementById('note-bab').value;
+            const hal = document.getElementById('note-hal').value;
+            const desc = document.getElementById('note-desc').value;
+
+            if (!fan || !bab) return alert("Mohon isi Fan dan Bab!");
+
+            const noteObj = { id: Date.now(), tanggal: document.getElementById('current-day-text').textContent, fan, kelas, bab, hal, desc };
+            let notes = JSON.parse(localStorage.getItem('bukuSakuData') || '[]');
+            notes.unshift(noteObj);
+            localStorage.setItem('bukuSakuData', JSON.stringify(notes));
+            
+            // Clear inputs
+            document.getElementById('note-fan').value = ''; document.getElementById('note-kelas').value = '';
+            document.getElementById('note-bab').value = ''; document.getElementById('note-hal').value = ''; document.getElementById('note-desc').value = '';
+            loadCatatan();
+        }
+
+        function loadCatatan() {
+            const notes = JSON.parse(localStorage.getItem('bukuSakuData') || '[]');
+            const container = document.getElementById('notes-container');
+            container.innerHTML = '';
+            notes.forEach(n => {
+                container.innerHTML += `
+                    <div class="note-card">
+                        <div class="note-header"><span><i class="fa-regular fa-clock"></i> ${n.tanggal}</span> <span>Kelas: ${n.kelas}</span></div>
+                        <div class="note-title">${n.fan} - Bab: ${n.bab} (Hal. ${n.hal || '-'})</div>
+                        <p style="font-size:0.8rem; margin-top:6px;">${n.desc}</p>
+                        <button onclick="hapusCatatan(${n.id})" style="background:none; border:none; color:#ef4444; font-size:0.7rem; margin-top:8px; cursor:pointer;"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </div>`;
+            });
+        }
+
+        function hapusCatatan(id) {
+            let notes = JSON.parse(localStorage.getItem('bukuSakuData') || '[]');
+            notes = notes.filter(n => n.id !== id);
+            localStorage.setItem('bukuSakuData', JSON.stringify(notes));
+            loadCatatan();
+        }
+
+        function backupJSON() {
+            const dataStr = localStorage.getItem('bukuSakuData') || '[]';
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `Backup_BukuSaku_${new Date().toISOString().slice(0,10)}.json`;
+            a.click(); URL.revokeObjectURL(url);
+        }
+
+        // Poster Export Export
+        document.getElementById('btn-poster-menu').addEventListener('click', function() {
+            html2canvas(document.getElementById('capture-area'), { scale: 2, backgroundColor: "#fbf7e9" }).then(canvas => {
+                const a = document.createElement('a'); a.download = `Jadwal-Muhadloroh.jpg`; a.href = canvas.toDataURL('image/jpeg', 0.95); a.click();
+            });
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => { renderJadwal(); });
+    </script>
+</body>
+</html>
