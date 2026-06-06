@@ -1,0 +1,15 @@
+{
+  "name": "Muhadloroh Daltim",
+  "short_name": "Muhadloroh",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#032b14",
+  "theme_color": "#032b14",
+  "icons": [
+    {
+      "src": "https://images.squarespace-cdn.com/content/v1/660c67e91459a93644f128e0/157e8496-e2ee-44df-9114-1e0fe257be7a/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
