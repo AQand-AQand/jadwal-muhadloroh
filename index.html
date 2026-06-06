@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUHADLOROH BUSTANUL ULUM DALTIM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; margin: 0; padding-bottom: 100px; }
+        .header { background: #032b14; color: white; padding: 20px; text-align: center; border-bottom: 4px solid #e2b354; }
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        #search-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        h3 { background: #e2b354; padding: 10px; border-radius: 6px; color: #032b14; text-align: center; font-size: 15px; margin-top: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; background: white; }
+        th { background: #00753a; color: white; padding: 10px; font-size: 12px; }
+        td { border: 1px solid #ddd; padding: 8px; font-size: 11px; }
+        /* Floating Menu */
+        .fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .fab-btn { width: 56px; height: 56px; border-radius: 50%; border: none; background: #032b14; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; font-size: 20px; }
+        .menu-options { display: none; flex-direction: column; gap: 10px; }
+        .menu-options.show { display: flex; }
+        .option-btn { width: 50px; height: 50px; border-radius: 50%; border: none; color: white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <div class="header"><h2>JADWAL MUHADLOROH</h2></div>
+    <div class="container">
+        <input type="text" id="search-box" placeholder="🔍 Cari nama guru...">
+        <div id="jadwal-container"></div>
+    </div>
+
+    <div class="fab-container">
+        <div class="menu-options" id="menuOptions">
+            <button class="option-btn" id="btn-install" style="background: #8b5cf6; display: none;"><i class="fa-solid fa-download"></i></button>
+            <button class="option-btn" style="background: #16a34a;" onclick="window.print()"><i class="fa-solid fa-print"></i></button>
+        </div>
+        <button class="fab-btn" id="mainMenuTrigger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <script>
+    const db = [
+        // DATA LENGKAP (SABTU-KAMIS)
+        { h: "Sabtu", g: "Banin", k: "Isti'dad A", j1: "Shorof (Abdurrahman Haris)", j2: "Tauhid (Abdur Rouf)" },
+        { h: "Sabtu", g: "Banin", k: "Kelas Satu", j1: "Akhlaq (Aliman)", j2: "Akhlaq (Aliman)" },
+        { h: "Sabtu", g: "Banin", k: "Kelas Dua", j1: "Muhafadzoh (Fathir Al-Fauzi)", j2: "Nahwu (Fathir Al-Fauzi)" },
+        { h: "Sabtu", g: "Banin", k: "Kelas Tiga", j1: "Shorof (Ahmad Muzakki)", j2: "Nahwu (Lora Izzul Fahmi)" },
+        { h: "Sabtu", g: "Banin", k: "Kelas Empat", j1: "Muhafadzoh (Saifuddin Zuhri)", j2: "Nahwu (Saifuddin Zuhri)" },
+        { h: "Sabtu", g: "Banat", k: "Sugro", j1: "Tarikh (Riyanti)", j2: "Tajwid (Riyanti)" },
+        { h: "Sabtu", g: "Banat", k: "Kelas Satu", j1: "Nahwu (Faizah)", j2: "Nahwu (Faizah)" },
+        { h: "Sabtu", g: "Banat", k: "Kelas Dua", j1: "Fiqih (Mila)", j2: "Shorof (GT)" },
+        { h: "Sabtu", g: "Banat", k: "Kelas Tiga", j1: "Tauhid (GT)", j2: "Nahwu (Hilmi Haritsah)" },
+        { h: "Sabtu", g: "Banat", k: "Kelas Empat", j1: "Fiqih (Wilda)", j2: "Nahwu (GT)" },
+        { h: "Sabtu", g: "Banat", k: "Kelas Lima", j1: "Fiqih (GT)", j2: "Ushul Fiqh (Ahmad Muzakki)" },
+        { h: "Sabtu", g: "Banat", k: "Kelas Enam", j1: "Q. Fiqih (Taufiqurrahman)", j2: "Hadist (Lora Ainul Yaqien)" },
+        { h: "Ahad", g: "Banin", k: "Isti'dad A", j1: "Nahwu (Lora Izzul Fahmi)", j2: "Nahwu (Lora Izzul Fahmi)" },
+        { h: "Ahad", g: "Banin", k: "Kelas Satu", j1: "Fiqih (Hubailul Hakam)", j2: "Fiqih (Hubailul Hakam)" },
+        { h: "Ahad", g: "Banin", k: "Kelas Dua", j1: "Nahwu (Fathir)", j2: "Nahwu (Fathir)" },
+        { h: "Ahad", g: "Banin", k: "Kelas Tiga", j1: "Fiqih (Muhammad David)", j2: "Fiqih (Muhammad David)" },
+        { h: "Ahad", g: "Banin", k: "Kelas Empat", j1: "Fiqih (Taufiqurrahman)", j2: "Fiqih (Taufiqurrahman)" },
+        { h: "Ahad", g: "Banat", k: "Sugro", j1: "Hadist (Luluk)", j2: "Tauhid (Roifah)" },
+        { h: "Ahad", g: "Banat", k: "Kelas Satu", j1: "Akhlaq (Ana Naiba)", j2: "Tarikh (Ana Naiba)" },
+        { h: "Ahad", g: "Banat", k: "Kelas Dua", j1: "Nahwu (Fifin)", j2: "Tauhid (Luluk)" },
+        { h: "Ahad", g: "Banat", k: "Kelas Tiga", j1: "Nahwu (Hilmi Haritsah)", j2: "Nahwu (Hilmi Haritsah)" },
+        { h: "Ahad", g: "Banat", k: "Kelas Empat", j1: "Fiqih (Wilda)", j2: "Fiqih (Wilda)" },
+        { h: "Ahad", g: "Banat", k: "Kelas Lima", j1: "Fiqih (GT)", j2: "Q. Fiqh (Saiful Badri)" },
+        { h: "Ahad", g: "Banat", k: "Kelas Enam", j1: "Nahwu (Saiful Badri)", j2: "Usul Fiqh (Ahmad Muzakki)" },
+        { h: "Senin", g: "Banin", k: "Isti'dad A", j1: "Fiqih (Agil Sahaly)", j2: "Fiqih (Agil Sahaly)" },
+        { h: "Senin", g: "Banin", k: "Kelas Satu", j1: "Nahwu (Hubailul Hakam)", j2: "Nahwu (Hubailul Hakam)" },
+        { h: "Senin", g: "Banin", k: "Kelas Dua", j1: "Fiqih (Fathir)", j2: "Fiqih (Fathir)" },
+        { h: "Senin", g: "Banin", k: "Kelas Tiga", j1: "Fiqih (Muhammad David)", j2: "Sorogan (Muhammad David)" },
+        { h: "Senin", g: "Banin", k: "Kelas Empat", j1: "Nahwu (Saifuddin Zuhri)", j2: "Nahwu (Saifuddin Zuhri)" },
+        { h: "Senin", g: "Banat", k: "Sugro", j1: "Shorof (Liyadzah)", j2: "Shorof (Liyadzah)" },
+        { h: "Senin", g: "Banat", k: "Kelas Satu", j1: "Bahasa Arab (Maghfiroh)", j2: "Nahwu (Faizah)" },
+        { h: "Senin", g: "Banat", k: "Kelas Dua", j1: "Fiqih (Amilatul Fauziah)", j2: "Hadist (Maghfiroh)" },
+        { h: "Senin", g: "Banat", k: "Kelas Tiga", j1: "Bahasa Arab (Neng Zamiroh)", j2: "Risalatul Mahid (Neng Sinta)" },
+        { h: "Senin", g: "Banat", k: "Kelas Empat", j1: "Risalatul Mahid (Neng Sinta)", j2: "Bahasa Arab (GT)" },
+        { h: "Senin", g: "Banat", k: "Kelas Lima", j1: "B. Arab (Imdad Fahmi)", j2: "Hadist (Imdad Fahmi)" },
+        { h: "Senin", g: "Banat", k: "Kelas Enam", j1: "Nahwu (Saiful Badri)", j2: "Nahwu (Saiful Badri)" },
+        { h: "Selasa", g: "Banin", k: "Isti'dad A", j1: "Pegon (Abdullah Sholeh)", j2: "Nahwu (Lora Izzul Fahmi)" },
+        { h: "Selasa", g: "Banin", k: "Kelas Satu", j1: "Fiqih (Hubailul Hakam)", j2: "Shorof (Abdur Rosyid)" },
+        { h: "Selasa", g: "Banin", k: "Kelas Dua", j1: "Shorof (Abdur Rosyid)", j2: "Fiqih (Fathir)" },
+        { h: "Selasa", g: "Banin", k: "Kelas Tiga", j1: "Nahwu (Lora Izzul Fahmi)", j2: "Tarikh (Lora Ainul Yaqien)" },
+        { h: "Selasa", g: "Banin", k: "Kelas Empat", j1: "Tarikh (Lora Ainul Yaqien)", j2: "Akhlaq (Hasan Baisuni)" },
+        { h: "Selasa", g: "Banat", k: "Sugro", j1: "Nahwu (Nasya)", j2: "Nahwu (Nasya)" },
+        { h: "Selasa", g: "Banat", k: "Kelas Satu", j1: "Shorof (Liyadzah)", j2: "Tauhid (Nabila)" },
+        { h: "Selasa", g: "Banat", k: "Kelas Dua", j1: "Akhlaq (Maghfiroh)", j2: "Tarikh (GT)" },
+        { h: "Selasa", g: "Banat", k: "Kelas Tiga", j1: "Hadist (Neng Zamiroh)", j2: "Akhlaq (Neng Hanifah)" },
+        { h: "Selasa", g: "Banat", k: "Kelas Empat", j1: "Hadist (Neng Hanifah)", j2: "Ushul (Ahmad Muzakki)" },
+        { h: "Selasa", g: "Banat", k: "Kelas Lima", j1: "Nahwu (Ahmad Muzakki)", j2: "Fiqih (GT)" },
+        { h: "Selasa", g: "Banat", k: "Kelas Enam", j1: "Tafsir (Hasan Baisuni)", j2: "Tasawuf (Lora Abdul Fattah)" },
+        { h: "Rabu", g: "Banin", k: "Isti'dad A", j1: "Nahwu (Lora Izzul Fahmi)", j2: "Nahwu (Lora Izzul Fahmi)" },
+        { h: "Rabu", g: "Banin", k: "Kelas Satu", j1: "Muhafadzoh (Hubailul Hakam)", j2: "Nahwu (Hubailul Hakam)" },
+        { h: "Rabu", g: "Banin", k: "Kelas Dua", j1: "Tarikh (Hamdan Yuafi)", j2: "Akhlaq (Hamdan Yuafi)" },
+        { h: "Rabu", g: "Banin", k: "Kelas Tiga", j1: "Hadist (Lora Abdul Fattah)", j2: "Tauhid (Abdul Mu'thi)" },
+        { h: "Rabu", g: "Banin", k: "Kelas Empat", j1: "Tauhid (Abdul Mu'thi)", j2: "Hadist (Lora Abdul Fattah)" },
+        { h: "Rabu", g: "Banat", k: "Sugro", j1: "Akhlaq (Roifah)", j2: "B. Arab (Diana)" },
+        { h: "Rabu", g: "Banat", k: "Kelas Satu", j1: "Fiqih (Meisi)", j2: "Fiqih (Meisi)" },
+        { h: "Rabu", g: "Banat", k: "Kelas Dua", j1: "Nahwu (Fifin)", j2: "Nahwu (Fifin)" },
+        { h: "Rabu", g: "Banat", k: "Kelas Tiga", j1: "Tarikh (Lora Ainul Yaqien)", j2: "Shorof (Khoiron)" },
+        { h: "Rabu", g: "Banat", k: "Kelas Empat", j1: "Qowaidul Fiqih (Khoiron)", j2: "Nahwu (GT)" },
+        { h: "Rabu", g: "Banat", k: "Kelas Lima", j1: "Nahwu (Ahmad Muzakki)", j2: "Nahwu (Ahmad Muzakki)" },
+        { h: "Rabu", g: "Banat", k: "Kelas Enam", j1: "Fiqih (Abdur Rozaq)", j2: "Fiqih (Abdur Rozaq)" },
+        { h: "Kamis", g: "Banin", k: "Isti'dad A", j1: "Fiqih (Agil Sahaly)", j2: "Fiqih (Agil Sahaly)" },
+        { h: "Kamis", g: "Banin", k: "Kelas Satu", j1: "Tauhid (Khoiron)", j2: "Tajwid (Abdullah Sholeh)" },
+        { h: "Kamis", g: "Banin", k: "Kelas Dua", j1: "Tajwid (Abdullah Sholeh)", j2: "Tauhid (Khoiron)" },
+        { h: "Kamis", g: "Banin", k: "Kelas Tiga", j1: "Akhlaq (Abdur Rozaq)", j2: "Muhafadzoh (Lora Izzul Fahmi)" },
+        { h: "Kamis", g: "Kamis", g: "Banin", k: "Kelas Empat", j1: "Fiqih (Taufiqurrahman)", j2: "Sorogan (Taufiqurrahman)" },
+        { h: "Kamis", g: "Banat", k: "Sugro", j1: "Fiqih (Nabila)", j2: "Fiqih (Nabila)" },
+        { h: "Kamis", g: "Banat", k: "Kelas Satu", j1: "Fiqih (Meisi)", j2: "Tajwid (Liyadzah)" },
+        { h: "Kamis", g: "Banat", k: "Kelas Dua", j1: "Fiqih (Mila)", j2: "I'lal (GT)" },
+        { h: "Kamis", g: "Banat", k: "Kelas Tiga", j1: "Fiqih (Neng Zamiroh)", j2: "Fiqih (Neng Zamiroh)" },
+        { h: "Kamis", g: "Banat", k: "Kelas Empat", j1: "Nahwu (GT)", j2: "Akhlaq (Neng Sinta)" },
+        { h: "Kamis", g: "Banat", k: "Kelas Lima", j1: "M. Hadist (Lora Izzul Fahmi)", j2: "Tauhid (As'adus Shodiqin)" },
+        { h: "Kamis", g: "Banat", k: "Kelas Enam", j1: "Tauhid (As'adus Shodiqin)", j2: "Fiqih (Abdur Rozaq)" }
+    ];
+
+    function render(query = "") {
+        const container = document.getElementById('jadwal-container');
+        container.innerHTML = "";
+        ["Sabtu", "Ahad", "Senin", "Selasa", "Rabu", "Kamis"].forEach(hari => {
+            let rows = db.filter(d => d.h === hari && (d.j1.toLowerCase().includes(query.toLowerCase()) || d.j2.toLowerCase().includes(query.toLowerCase())));
+            if(rows.length > 0) {
+                let html = `<h3>${hari}</h3><table><thead><tr><th>Kelas</th><th>Jam 1</th><th>Jam 2</th></tr></thead><tbody>`;
+                rows.forEach(d => { html += `<tr><td>${d.k}<br>(${d.g})</td><td>${d.j1}</td><td>${d.j2}</td></tr>`; });
+                container.innerHTML += html + `</tbody></table>`;
+            }
+        });
+    }
+
+    // Toggle Menu
+    document.getElementById('mainMenuTrigger').addEventListener('click', () => { document.getElementById('menuOptions').classList.toggle('show'); });
+
+    // PWA Logic
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('btn-install').style.display = 'flex'; });
+    document.getElementById('btn-install').addEventListener('click', () => { deferredPrompt.prompt(); });
+
+    document.getElementById('search-box').addEventListener('input', (e) => render(e.target.value));
+    render();
+    </script>
+</body>
+</html>
