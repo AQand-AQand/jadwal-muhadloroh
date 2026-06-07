@@ -1,0 +1,17 @@
+{
+  "name": "Muhadloroh Bustanul Ulum Daltim",
+  "short_name": "Muhadloroh",
+  "description": "Aplikasi Jadwal Mengajar Offline Madrasah",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf7e9",
+  "theme_color": "#032b14",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23032b14' rx='120'/%3E%3Cpath d='M352 144c-26.5 0-48 21.5-48 48v224H208V192c0-26.5-21.5-48-48-48s-48 21.5-48 48v224c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32V192c0-26.5-21.5-48-48-48zm-96 256v-64h-32v64h-32v-80c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16v80h-32z' fill='%23d4af37'/%3E%3Cpath d='M256 64L160 128v16h192v-16L256 64z' fill='%23d4af37'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
