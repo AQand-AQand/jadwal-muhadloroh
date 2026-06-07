@@ -715,34 +715,12 @@
         defPrompt = null; 
         }
         
-        if('serviceWorker' in navigator) { 
-        window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); 
-        }
-        
-        window.onload = initApp;
-        </script>
-        </body>
-        </html>l; 
-        }
+        if('serviceWorker' in navigator) {
+    window.addEventListener('load', () =>
+        navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
 
-        if('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
-
-        window.onload = initApp;
-    </script>
-</body>
-</html>unction installApp() {
-            if(!defPrompt) return; 
-            defPrompt.prompt(); 
-            const { outcome } = await defPrompt.userChoice; 
-            if(outcome === 'accepted') {
-                document.getElementById('banner-install').classList.add('hidden');
-            }
-            defPrompt = null; 
-        }
-
-        if('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
-
-        window.onload = initApp;
-    </script>
+window.onload = initApp;
+</script>
 </body>
 </html>
