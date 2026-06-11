@@ -1,4 +1,4 @@
-const CACHE_NAME = 'muhadloroh-cache-v6';
+const CACHE_NAME = 'muhadloroh-cache-v7';
 const urlsToCache = [
   './',
   './index.html',
